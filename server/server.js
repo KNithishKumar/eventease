@@ -5,15 +5,54 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const initReminderCron = require('./services/reminderCron');
-
 const User = require('./models/User');
 
 dotenv.config();
 
+const app = express();
+
+// CORS: allow local dev and deployed Vercel frontend
+const rawOrigins = [
+  'http://localhost:5173',
+  'https://eventeasewa.vercel.app',
+  process.env.CLIENT_URL
+].filter(Boolean);
+
+const allowedOrigins = rawOrigins.map(o => o.startsWith('http') ? o : 'https://' + o);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('CORS: origin not allowed - ' + origin));
+  },
+  credentials: true
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'EventEase Backend Running' });
+});
+
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/events', require('./routes/eventRoutes'));
+app.use('/api/registrations', require('./routes/registrationRoutes'));
+app.use('/api/payment', require('./routes/paymentRoutes'));
+app.use('/api/attendance', require('./routes/attendanceRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+
+app.use(notFound);
+app.use(errorHandler);
+
 (async () => {
   try {
     await connectDB();
-    // Auto-seed Admin if missing
+
     const adminExists = await User.findOne({ email: 'admin@eventease.com' });
     if (!adminExists) {
       await User.create({
@@ -26,47 +65,19 @@ dotenv.config();
         phone: '9876543210',
         interests: ['Coding', 'AI/ML', 'Workshops']
       });
-      console.log('[Auto-Seed]: Created default Admin account: admin@eventease.com / password123');
+      console.log('[Auto-Seed]: Created default Admin account');
     }
+
+    initReminderCron();
+
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log('[EventEase Server]: Listening on port ' + PORT);
+    });
   } catch (err) {
-    console.error('[Auto-Seed Error]:', err.message);
+    console.error('[Startup Error]:', err.message);
+    process.exit(1);
   }
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`[EventEase Server]: Listening on http://localhost:${PORT}`);
-  });
 })();
 
-const app = express();
-
-// Middlewares
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Static uploads folder for posters
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Healthcheck Route
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'EventEase Backend Server Running Cleanly 🚀' });
-});
-
-// API Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/events', require('./routes/eventRoutes'));
-app.use('/api/registrations', require('./routes/registrationRoutes'));
-app.use('/api/payment', require('./routes/paymentRoutes'));
-
-app.use('/api/attendance', require('./routes/attendanceRoutes'));
-app.use('/api/notifications', require('./routes/notificationRoutes'));
-app.use('/api/admin', require('./routes/adminRoutes'));
-
-// Error handling
-app.use(notFound);
-app.use(errorHandler);
-
-// Initialize node-cron automated reminders
-initReminderCron();
-
-
+module.exports = app;
