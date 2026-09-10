@@ -10,12 +10,10 @@ const User = require('./models/User');
 
 dotenv.config();
 
-// Connect Database & Ensure Default Admin Account
-const initServer = async () => {
-  await connectDB();
-
-  // Auto-seed Admin if missing
+(async () => {
   try {
+    await connectDB();
+    // Auto-seed Admin if missing
     const adminExists = await User.findOne({ email: 'admin@eventease.com' });
     if (!adminExists) {
       await User.create({
@@ -33,9 +31,11 @@ const initServer = async () => {
   } catch (err) {
     console.error('[Auto-Seed Error]:', err.message);
   }
-};
-
-initServer();
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`[EventEase Server]: Listening on http://localhost:${PORT}`);
+  });
+})();
 
 const app = express();
 
@@ -57,7 +57,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/events', require('./routes/eventRoutes'));
 app.use('/api/registrations', require('./routes/registrationRoutes'));
 app.use('/api/payment', require('./routes/paymentRoutes'));
-app.use('/api', require('./routes/paymentRoutes'));
+
 app.use('/api/attendance', require('./routes/attendanceRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
@@ -69,7 +69,4 @@ app.use(errorHandler);
 // Initialize node-cron automated reminders
 initReminderCron();
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`[EventEase Server]: Listening on http://localhost:${PORT}`);
-});
+
