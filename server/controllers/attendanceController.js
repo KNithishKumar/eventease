@@ -34,7 +34,9 @@ const checkInAttendee = async (req, res) => {
         'user',
         'name email department year phone'
       );
-    } else if (registrationId) {
+    }
+    // Fallback: try registrationId if qrToken lookup didn't find anything
+    if (!registration && registrationId) {
       registration = await Registration.findOne({ registrationId, event: eventId }).populate(
         'user',
         'name email department year phone'
