@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 selection:bg-teal-600 selection:text-white font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight font-bold;
+  }
+}
+
+@layer utilities {
+  .app-panel {
+    @apply bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800;
+  }
+  .app-card {
+    @apply bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-5 shadow-sm;
+  }
+  /* Backwards compatibility helper for existing card references */
+  .glass-card {
+    @apply bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-sm;
+  }
+  .glass-panel {
+    @apply bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800;
+  }
+}
+
+/* Custom clean scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300 dark:bg-neutral-700 rounded;
+}
+
+/* Single-page Clean PDF Print Styles */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  header, nav, aside, footer, button, .no-print, #ticket-top-nav, #ticket-celebration-banner, #ticket-actions-bar {
+    display: none !important;
+  }
+
+  #printable-ticket {
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    border: 2px solid #0d9488 !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
