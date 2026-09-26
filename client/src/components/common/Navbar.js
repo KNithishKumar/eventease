@@ -99,10 +99,10 @@ return (
         {/* Browse Events */}
         <Link
           to="/events"
-          className={`px-4 py-2.5 text-sm font-semibold transition-colors ${
+          className={`px-4 py-2.5 text-xl bg-primary-500 rounded-full text-white font-semibold hover:bg-primary-700 transition-colors ${
             isActive('/events')
               ? 'text-[#ff4d79]'
-              : 'text-[#64748b] dark:text-neutral-300 hover:text-[#1e2448] dark:hover:text-white'
+              : 'text-[#64748b] dark:text-neutral-300 hover:text-[#1e2448] dark:hover:text-white dark:hover:bg-primary-700'
           }`}
         >
           Browse Events
@@ -238,7 +238,6 @@ return (
               className="px-4 py-2 text-l font-semibold
               text-white dark:text-neutral-200
               hover:bg-[#f43f68]
-              hover:text-black
               transition-colors
               bg-[#ff4d79]
               font-[Seouge UI]"

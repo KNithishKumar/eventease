@@ -48,7 +48,7 @@ const EventCard = ({ event, onRegister, isRegistering = false, userRegistration 
   };
 
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-sm overflow-hidden flex flex-col hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm overflow-hidden flex flex-col hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
       {/* Image / Poster Header */}
       <div className="relative h-48 w-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
         <img
@@ -59,7 +59,7 @@ const EventCard = ({ event, onRegister, isRegistering = false, userRegistration 
             e.target.src = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&auto=format&fit=crop&q=60';
           }}
         />
-        <div className="absolute top-3 left-3 flex space-x-2">
+        <div className="absolute top-3 left-3 flex space-x-2 ">
           <Badge variant={getCategoryColor(category)}>{category}</Badge>
           <Badge variant={eventType === 'Free' ? 'success' : 'purple'}>
             {eventType === 'Free' ? 'Free' : `₹${registrationFee}`}
@@ -75,21 +75,21 @@ const EventCard = ({ event, onRegister, isRegistering = false, userRegistration 
       {/* Content */}
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-base font-semibold text-neutral-900 dark:text-white line-clamp-1 hover:text-indigo-600 transition-colors">
+          <h3 className="text-xl text-base font-bold font-[Seouge UI] text-neutral-900 dark:text-white line-clamp-1 hover:text-indigo-600 transition-colors">
             {title}
           </h3>
 
-          <div className="mt-3 space-y-1.5 text-xs text-neutral-600 dark:text-neutral-400">
+          <div className="mt-3 space-y-1.5 text-xl text-neutral-600 font-[Seouge UI] dark:text-neutral-400">
             <div className="flex items-center space-x-2">
-              <FiCalendar className="shrink-0" size={14} />
+              <FiCalendar className="shrink-0" size={20} />
               <span>{formatDate(date)} ({startTime})</span>
             </div>
             <div className="flex items-center space-x-2">
-              <FiMapPin className="shrink-0" size={14} />
+              <FiMapPin className="shrink-0" size={20} />
               <span className="line-clamp-1">{venue}</span>
             </div>
             <div className="flex items-center space-x-2">
-              <FiUser className="shrink-0" size={14} />
+              <FiUser className="shrink-0" size={20} />
               <span>{organizer?.name || 'Organizer'}</span>
             </div>
           </div>
@@ -97,8 +97,8 @@ const EventCard = ({ event, onRegister, isRegistering = false, userRegistration 
 
         {/* Foot Stats & Actions */}
         <div className="mt-5 pt-4 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center justify-between">
-          <div className="flex items-center space-x-1.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-            <FiUsers size={14} className="text-neutral-400" />
+          <div className="flex items-center space-x-1.5 text-l font-semibold text-neutral-500 dark:text-neutral-400">
+            <FiUsers size={20} className="text-neutral-400" />
             <span>
               {registeredCount}/{capacity} registered
             </span>
@@ -108,7 +108,7 @@ const EventCard = ({ event, onRegister, isRegistering = false, userRegistration 
           <div className="flex items-center space-x-2">
             <Link
               to={`/events/${_id}`}
-              className="px-3 py-1.5 text-xs font-semibold text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
+              className="px-3 py-1.5 text-l font-semibold text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
             >
               Details
             </Link>
@@ -121,7 +121,7 @@ const EventCard = ({ event, onRegister, isRegistering = false, userRegistration 
               <button
                 onClick={() => onRegister(_id)}
                 disabled={isRegistering}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors text-white shadow-sm ${
+                className={`px-3 py-1.5 text-l font-bold transition-colors text-white shadow-sm ${
                   isFull ? 'bg-amber-600 hover:bg-amber-700' : 'bg-primary-600 hover:bg-primary-700'
                 }`}
               >

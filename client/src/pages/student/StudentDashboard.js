@@ -39,20 +39,20 @@ const StudentDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-lg shadow-sm">
+      <div className="dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-lg shadow-sm">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Student Portal</span>
-            <h1 className="text-2xl font-bold text-neutral-900 dark:text-white mt-1">
-              Welcome back, {user.name} 👋
+            <span className="text-l font-[Seouge UI] font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Student Portal</span>
+            <h1 className="text-4xl font-bold text-neutral-900 uppercase dark:text-white mt-1">
+              WELCOME BACK, {user.name}
             </h1>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            <p className="text-l text-neutral-500 dark:text-neutral-400 mt-1">
               {user.department} ({user.year}) • {user.interests.join(', ') || 'General Student'}
             </p>
           </div>
           <Link
             to="/events"
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md text-xs transition-colors"
+            className="px-4 py-2 bg-primary-500 hover:bg-primary-700 text-white text-xl transition-colors"
           >
             Explore Events →
           </Link>
@@ -60,7 +60,7 @@ const StudentDashboard = () => {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 ga rounded-full">
         <StatCard
           title="Total Registered"
           value={activeRegistrations.length}
@@ -94,10 +94,10 @@ const StudentDashboard = () => {
       {/* Upcoming Registered Events */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-neutral-900 dark:text-white font-display">
+          <h2 className="text-3xl font-bold text-neutral-900 dark:text-white font-display">
             Your Upcoming Registered Events ({upcomingEvents.length})
           </h2>
-          <Link to="/student/my-events" className="text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline">
+          <Link to="/student/my-events" className="text-l font-bold text-primary-600 dark:text-primary-400 hover:underline">
             View All My Events →
           </Link>
         </div>
@@ -105,9 +105,9 @@ const StudentDashboard = () => {
         {upcomingEvents.length === 0 ? (
           <EmptyState
             title="No upcoming event registrations"
-            message="You have not registered for any upcoming events yet. Discover hackathons and workshops now!"
+            message="You have not registered for any upcoming events yet. Discover hackathons, workshops etc now!"
             action={
-              <Link to="/events" className="px-4 py-2 bg-primary-600 text-white font-bold rounded-xl text-xs">
+              <Link to="/events" className="px-4 py-2 bg-primary-500 text-white font-bold text-xl">
                 Browse Events
               </Link>
             }
