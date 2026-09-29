@@ -32,23 +32,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
-  const handleDemoLogin = async (demoEmail, demoPassword) => {
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-    setLoading(true);
-    try {
-      const user = await login({ email: demoEmail, password: demoPassword });
-      if (user.role === 'student') navigate('/student/dashboard');
-      else if (user.role === 'organizer') navigate('/organizer/dashboard');
-      else if (user.role === 'admin') navigate('/admin/dashboard');
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="flex items-center justify-center p-4 dark:bg-black">
       <div className="w-full max-w-md space-y-6 dark:bg-black">

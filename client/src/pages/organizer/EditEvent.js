@@ -98,37 +98,46 @@ const EditEvent = () => {
   };
 
   if (loading) return <LoadingSpinner fullScreen />;
-  if (!formData) return <div className="p-8 text-center">Event not found</div>;
+  if (!formData) return <div className="p-8 text-center text-s uppercase font-bold text-neutral-500">Event not found</div>;
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      {/* Back Button */}
       <button
         onClick={() => navigate('/organizer/events')}
-        className="inline-flex items-center space-x-2 text-sm font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900"
+        className="inline-flex items-center space-x-2 text-s font-bold uppercase tracking-wider text-neutral-600 hover:text-primary-600 transition-colors"
       >
         <FiArrowLeft size={16} />
         <span>Back to My Organized Events</span>
       </button>
 
+      {/* Event Passed Notice Banner */}
       {isPassed && (
-        <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/80 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-bold flex items-center space-x-2">
+        <div className="p-4 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold uppercase tracking-wider flex items-center space-x-2">
           <FiAlertCircle size={18} />
           <span>This event has already taken place. Business rules forbid modifying past events.</span>
         </div>
       )}
 
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-8 rounded-lg space-y-6 shadow-sm">
+      {/* Main Container */}
+      <div className="bg-white border border-neutral-200 p-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">Edit Event Details</h1>
-          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+          <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
+            Organizer Portal
+          </label>
+          <h1 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
+            Edit Event Details
+          </h1>
+          <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
             Updating an event resets its status to Pending Approval for Admin safety check.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Title */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Event Title
               </label>
               <input
@@ -138,12 +147,13 @@ const EditEvent = () => {
                 disabled={isPassed}
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
               />
             </div>
 
+            {/* Category */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Category
               </label>
               <select
@@ -151,7 +161,7 @@ const EditEvent = () => {
                 disabled={isPassed}
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>
@@ -161,8 +171,9 @@ const EditEvent = () => {
               </select>
             </div>
 
+            {/* Venue */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Venue
               </label>
               <input
@@ -172,12 +183,13 @@ const EditEvent = () => {
                 disabled={isPassed}
                 value={formData.venue}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
               />
             </div>
 
+            {/* Event Date */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Event Date
               </label>
               <input
@@ -187,12 +199,13 @@ const EditEvent = () => {
                 disabled={isPassed}
                 value={formData.date}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
               />
             </div>
 
+            {/* Capacity */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Capacity
               </label>
               <input
@@ -202,12 +215,13 @@ const EditEvent = () => {
                 disabled={isPassed}
                 value={formData.capacity}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
               />
             </div>
 
+            {/* Fee Type */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Fee Type
               </label>
               <select
@@ -215,7 +229,7 @@ const EditEvent = () => {
                 disabled={isPassed}
                 value={formData.eventType}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
               >
                 <option value="Free">Free</option>
                 <option value="Paid">Paid</option>
@@ -225,7 +239,7 @@ const EditEvent = () => {
             {formData.eventType === 'Paid' && (
               <>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                     Registration Fee (₹)
                   </label>
                   <input
@@ -235,20 +249,20 @@ const EditEvent = () => {
                     disabled={isPassed}
                     value={formData.registrationFee}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                    className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
                   />
                 </div>
 
-                <div className="sm:col-span-2 p-4 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 space-y-3">
+                <div className="sm:col-span-2 p-4 bg-emerald-50 border border-emerald-200 space-y-3">
                   <div>
-                    <h4 className="text-xs font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                       Organizer Payout & UPI Details
                     </h4>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Organizer UPI ID
                       </label>
                       <input
@@ -258,12 +272,12 @@ const EditEvent = () => {
                         placeholder="e.g. 9876543210@ybl"
                         value={formData.upiId}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white font-mono"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-mono focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Account Holder Name
                       </label>
                       <input
@@ -273,12 +287,12 @@ const EditEvent = () => {
                         placeholder="e.g. CSE Club"
                         value={formData.accountHolderName}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-[Segoe UI] focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Bank Name
                       </label>
                       <input
@@ -288,12 +302,12 @@ const EditEvent = () => {
                         placeholder="e.g. HDFC Bank"
                         value={formData.bankName}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-[Segoe UI] focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Account Number
                       </label>
                       <input
@@ -303,12 +317,12 @@ const EditEvent = () => {
                         placeholder="e.g. 5010023491823"
                         value={formData.bankAccountNumber}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white font-mono"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-mono focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         IFSC Code
                       </label>
                       <input
@@ -318,7 +332,7 @@ const EditEvent = () => {
                         placeholder="e.g. HDFC0001234"
                         value={formData.bankIfsc}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white font-mono uppercase"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-mono uppercase focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       />
                     </div>
                   </div>
@@ -326,8 +340,9 @@ const EditEvent = () => {
               </>
             )}
 
+            {/* Description */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Description
               </label>
               <textarea
@@ -337,15 +352,16 @@ const EditEvent = () => {
                 disabled={isPassed}
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full p-3 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full p-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI] disabled:opacity-50"
               ></textarea>
             </div>
           </div>
 
+          {/* Save Button */}
           <button
             type="submit"
             disabled={submitting || isPassed}
-            className="w-full py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold rounded-xl shadow-md transition-colors text-sm flex items-center justify-center space-x-2"
+            className="w-full text-xl py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold transition-colors text-sm uppercase tracking-wider flex items-center justify-center space-x-2"
           >
             <FiSave size={18} />
             <span>{submitting ? 'Saving Changes...' : 'Save Updated Event Details'}</span>

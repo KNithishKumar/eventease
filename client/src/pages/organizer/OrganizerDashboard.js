@@ -42,25 +42,25 @@ const OrganizerDashboard = () => {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-lg shadow-sm">
+      <div className="bg-white border border-neutral-200 p-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
               Organizer Workspace
-            </span>
-            <h1 className="text-2xl font-bold text-neutral-900 dark:text-white mt-1">
+            </label>
+            <h1 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
               Event Management Hub
             </h1>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
               Create events, track live QR gate attendance, and manage event details.
             </p>
           </div>
-          <div className="flex items-center space-x-3">
+          <div>
             <Link
               to="/organizer/events/create"
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md text-xs flex items-center space-x-1.5 transition-colors"
+              className="px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center space-x-1.5"
             >
               <FiPlusCircle size={16} />
               <span>Create Event</span>
@@ -71,47 +71,58 @@ const OrganizerDashboard = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Events Created" value={events.length} icon={FiCalendar} color="blue" />
-        <StatCard title="Approved & Public" value={approvedEvents.length} icon={FiCheckSquare} color="green" />
-        <StatCard title="Pending Review" value={pendingEvents.length} icon={FiClock} color="amber" />
-        <StatCard title="Total Registrations" value={totalRegistrations} icon={FiUsers} color="purple" />
+        <StatCard title="Total Events Created" value={events.length} icon={FiCalendar} />
+        <StatCard title="Approved & Public" value={approvedEvents.length} icon={FiCheckSquare} />
+        <StatCard title="Pending Review" value={pendingEvents.length} icon={FiClock} />
+        <StatCard title="Total Registrations" value={totalRegistrations} icon={FiUsers} />
       </div>
 
       {/* Event Performance & Category Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Events Table */}
-        <div className="lg:col-span-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 space-y-4 shadow-sm">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-neutral-900 dark:text-white">
+        {/* Events Table Container */}
+        <div className="lg:col-span-2 bg-white border border-neutral-200 p-6 space-y-4">
+          <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+            <h3 className="text-l font-bold uppercase tracking-wider text-neutral-900 font-display">
               Event Registrations & Attendance
             </h3>
-            <Link to="/organizer/events" className="text-xs font-medium text-indigo-600 hover:underline">
+            <Link
+              to="/organizer/events"
+              className="text-s font-bold text-primary-600 hover:underline uppercase tracking-wider"
+            >
               View All →
             </Link>
           </div>
 
           {events.length === 0 ? (
-            <p className="text-xs text-neutral-400 py-4">No events created yet.</p>
+            <p className="text-s text-neutral-500 font-[Segoe UI] italic py-4">
+              No events created yet.
+            </p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-neutral-600 dark:text-neutral-300">
-                <thead className="bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 uppercase text-[10px]">
+              <table className="w-full text-left text-xs font-[Segoe UI]">
+                <thead className="bg-neutral-50 font-bold uppercase tracking-wider text-neutral-500 border-b border-neutral-200">
                   <tr>
-                    <th className="p-3">Event Title</th>
-                    <th className="p-3">Category</th>
-                    <th className="p-3">Registrations</th>
-                    <th className="p-3">Attendance</th>
-                    <th className="p-3">Status</th>
+                    <th className="px-4 py-3.5">Event Title</th>
+                    <th className="px-4 py-3.5">Category</th>
+                    <th className="px-4 py-3.5">Registrations</th>
+                    <th className="px-4 py-3.5">Attendance</th>
+                    <th className="px-4 py-3.5">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
+                <tbody className="divide-y divide-neutral-200">
                   {events.slice(0, 5).map((e) => (
-                    <tr key={e._id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
-                      <td className="p-3 font-semibold text-neutral-900 dark:text-white line-clamp-1">{e.title}</td>
-                      <td className="p-3">{e.category}</td>
-                      <td className="p-3">{e.registeredCount} / {e.capacity}</td>
-                      <td className="p-3">{e.checkedInCount || 0}</td>
-                      <td className="p-3">
+                    <tr key={e._id} className="hover:bg-neutral-50 transition-colors">
+                      <td className="px-4 py-4 font-bold uppercase tracking-wider text-neutral-900">
+                        {e.title}
+                      </td>
+                      <td className="px-4 py-4 text-neutral-700 font-medium">{e.category}</td>
+                      <td className="px-4 py-4 font-bold text-neutral-900">
+                        {e.registeredCount} / {e.capacity}
+                      </td>
+                      <td className="px-4 py-4 font-bold text-neutral-900">
+                        {e.checkedInCount || 0}
+                      </td>
+                      <td className="px-4 py-4">
                         <Badge variant={e.status === 'approved' ? 'success' : 'warning'}>
                           {e.status}
                         </Badge>
@@ -124,17 +135,28 @@ const OrganizerDashboard = () => {
           )}
         </div>
 
-        {/* Category Breakdown */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 space-y-4 shadow-sm">
-          <h3 className="text-base font-bold text-neutral-900 dark:text-white">Category Distribution</h3>
+        {/* Category Breakdown Container */}
+        <div className="bg-white border border-neutral-200 p-6 space-y-4">
+          <h3 className="text-l font-bold uppercase tracking-wider text-neutral-900 font-display border-b border-neutral-200 pb-4">
+            Category Distribution
+          </h3>
           {Object.keys(categoryDataMap).length === 0 ? (
-            <p className="text-xs text-neutral-400 py-4">No category data</p>
+            <p className="text-s text-neutral-500 font-[Segoe UI] italic py-4">
+              No category data available.
+            </p>
           ) : (
             <div className="space-y-3">
               {Object.entries(categoryDataMap).map(([cat, count]) => (
-                <div key={cat} className="flex items-center justify-between p-3 rounded-md bg-neutral-50 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-800 text-xs">
-                  <span className="font-semibold text-neutral-700 dark:text-neutral-300">{cat}</span>
-                  <span className="font-bold text-neutral-900 dark:text-white">{count} events</span>
+                <div
+                  key={cat}
+                  className="flex items-center justify-between p-3 bg-neutral-50 border border-neutral-200 text-s font-[Segoe UI]"
+                >
+                  <span className="font-bold text-neutral-800 uppercase tracking-wider">
+                    {cat}
+                  </span>
+                  <span className="font-bold text-primary-600 font-mono text-base">
+                    {count} {count === 1 ? 'event' : 'events'}
+                  </span>
                 </div>
               ))}
             </div>

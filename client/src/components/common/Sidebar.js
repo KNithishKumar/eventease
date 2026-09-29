@@ -1,81 +1,138 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   FiGrid,
   FiCalendar,
   FiPlusCircle,
-  FiCheckSquare,
-  FiUsers,
-  FiBarChart2,
-  FiBell,
-  FiUser
+  FiUser,
+  FiLogOut,
+  FiBell
 } from 'react-icons/fi';
 
 const Sidebar = () => {
-  const { user } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  if (!user) return null;
-
-  const studentLinks = [
-    { name: 'Dashboard', path: '/student/dashboard', icon: FiGrid },
-    { name: 'My Events', path: '/student/my-events', icon: FiCalendar },
-    { name: 'Notifications', path: '/student/notifications', icon: FiBell },
-    { name: 'Profile & Interests', path: '/student/profile', icon: FiUser }
-  ];
-
-  const organizerLinks = [
-    { name: 'Dashboard', path: '/organizer/dashboard', icon: FiGrid },
-    { name: 'My Organized Events', path: '/organizer/events', icon: FiCalendar },
-    { name: 'Create Event', path: '/organizer/events/create', icon: FiPlusCircle },
-    { name: 'Notifications', path: '/organizer/notifications', icon: FiBell }
-  ];
-
-  const adminLinks = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: FiGrid },
-    { name: 'Pending Approvals', path: '/admin/events/pending', icon: FiCheckSquare },
-    { name: 'Manage Events', path: '/admin/events', icon: FiCalendar },
-    { name: 'Manage Users', path: '/admin/users', icon: FiUsers },
-    { name: 'Platform Summary', path: '/admin/analytics', icon: FiBarChart2 }
-  ];
-
-  const getLinks = () => {
-    if (user.role === 'student') return studentLinks;
-    if (user.role === 'organizer') return organizerLinks;
-    if (user.role === 'admin') return adminLinks;
-    return [];
+  const getDashboardPath = () => {
+    if (user?.role === 'student') return '/student/dashboard';
+    if (user?.role === 'organizer') return '/organizer/dashboard';
+    if (user?.role === 'admin') return '/admin/dashboard';
+    return '/';
   };
 
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <aside className="w-56 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 min-h-[calc(100vh-3.75rem)] p-3 hidden md:block">
-      <div className="mb-4 px-3 py-2 bg-neutral-50 dark:bg-neutral-800/60 rounded-md border border-neutral-200/60 dark:border-neutral-700/60">
-        <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Portal</span>
-        <h4 className="text-xs font-bold text-neutral-900 dark:text-white capitalize">
-          {user.role} Account
-        </h4>
+    <aside className="w-64 bg-white border-r border-neutral-200 min-h-screen flex flex-col justify-between p-4 font-[Segoe UI]">
+      {/* Top Section */}
+      <div className="space-y-6">
+        {/* Brand Logo Header */}
+        <div className="pb-4 border-b border-neutral-200 text-center">
+          <Link to="/" className="inline-block">
+            <span className="text-2xl font-extrabold tracking-tight text-neutral-900 font-[Segoe UI]">
+              Event<span className="text-primary-600">Ease</span>
+            </span>
+          </Link>
+        </div>
+
+        {/* Square Profile Badge (Sidebar Top) */}
+        {isAuthenticated && user && (
+          <div className="p-3 bg-neutral-50 border border-neutral-200 flex items-center space-x-3">
+            {/* Square Profile Logo / Avatar */}
+            <Link
+              to={user.role === 'student' ? '/student/profile' : getDashboardPath()}
+              className="w-10 h-10 border border-neutral-200 bg-neutral-900 text-white flex items-center justify-center font-bold text-sm shrink-0 hover:bg-primary-600 transition-colors"
+            >
+              {user.name ? user.name.charAt(0).toUpperCase() : <FiUser size={18} />}
+            </Link>
+
+            {/* Name & Role Details */}
+            <div className="overflow-hidden">
+              <p className="text-xs font-bold uppercase tracking-wider text-neutral-900 truncate">
+                {user.name}
+              </p>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-primary-600 block">
+                {user.role}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Sidebar Navigation Links */}
+        <nav className="space-y-2">
+          <Link
+            to="/events"
+            className={`flex items-center space-x-2.5 px-3.5 py-3 text-xs font-bold uppercase tracking-wider border transition-colors ${
+              isActive('/events')
+                ? 'bg-primary-600 text-white border-primary-600'
+                : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50 hover:text-primary-600'
+            }`}
+          >
+            <FiCalendar size={16} />
+            <span>Browse Events</span>
+          </Link>
+
+          {isAuthenticated && (
+            <Link
+              to={getDashboardPath()}
+              className={`flex items-center space-x-2.5 px-3.5 py-3 text-xs font-bold uppercase tracking-wider border transition-colors ${
+                location.pathname.includes('/dashboard')
+                  ? 'bg-primary-600 text-white border-primary-600'
+                  : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50 hover:text-primary-600'
+              }`}
+            >
+              <FiGrid size={16} />
+              <span>Dashboard</span>
+            </Link>
+          )}
+
+          {user?.role === 'organizer' && (
+            <Link
+              to="/organizer/events/create"
+              className={`flex items-center space-x-2.5 px-3.5 py-3 text-xs font-bold uppercase tracking-wider border transition-colors ${
+                isActive('/organizer/events/create')
+                  ? 'bg-primary-600 text-white border-primary-600'
+                  : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50 hover:text-primary-600'
+              }`}
+            >
+              <FiPlusCircle size={16} />
+              <span>Create Event</span>
+            </Link>
+          )}
+
+          {isAuthenticated && user?.role === 'student' && (
+            <Link
+              to="/student/profile"
+              className={`flex items-center space-x-2.5 px-3.5 py-3 text-xs font-bold uppercase tracking-wider border transition-colors ${
+                isActive('/student/profile')
+                  ? 'bg-primary-600 text-white border-primary-600'
+                  : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50 hover:text-primary-600'
+              }`}
+            >
+              <FiUser size={16} />
+              <span>My Profile</span>
+            </Link>
+          )}
+        </nav>
       </div>
 
-      <nav className="space-y-1">
-        {getLinks().map((link) => {
-          const Icon = link.icon;
-          return (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              className={({ isActive }) =>
-                `flex items-center space-x-2.5 px-3 py-2 rounded-md text-xs font-medium transition-colors ${
-                  isActive
-                    ? 'bg-neutral-100 dark:bg-neutral-800 text-indigo-600 dark:text-indigo-400 font-bold'
-                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white'
-                }`
-              }
-            >
-              <Icon size={16} />
-              <span>{link.name}</span>
-            </NavLink>
-          );
-        })}
-      </nav>
+      {/* Bottom Section: Logout Action */}
+      {isAuthenticated && (
+        <div className="pt-4 border-t border-neutral-200">
+          <button
+            onClick={() => {
+              logout();
+              navigate('/');
+            }}
+            className="w-full flex items-center justify-center space-x-2 px-3.5 py-3 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 text-neutral-800 text-xs font-bold uppercase tracking-wider transition-colors"
+          >
+            <FiLogOut size={16} />
+            <span>Logout</span>
+          </button>
+        </div>
+      )}
     </aside>
   );
 };

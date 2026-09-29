@@ -3,7 +3,7 @@ import { adminService } from '../../services/adminService';
 import StatCard from '../../components/common/StatCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import toast from 'react-hot-toast';
-import { FiUsers, FiCalendar, FiCheckCircle } from 'react-icons/fi';
+import { FiUsers, FiCalendar, FiCheckCircle, FiPieChart } from 'react-icons/fi';
 
 const PlatformAnalytics = () => {
   const [analytics, setAnalytics] = useState(null);
@@ -27,42 +27,82 @@ const PlatformAnalytics = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-bold text-neutral-900 dark:text-white">Platform Summary</h1>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-          Overview of total event registrations and attendance.
+      {/* Header Banner Container */}
+      <div className="bg-white border border-neutral-200 p-6">
+        <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
+          Analytics & Insights
+        </label>
+        <h1 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
+          Platform Summary
+        </h1>
+        <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
+          Overview of total event registrations, gate scans, and department engagement metrics.
         </p>
       </div>
 
+      {/* Metric Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Registrations" value={analytics?.totalRegistrations || 0} icon={FiUsers} />
-        <StatCard title="Gate Scans" value={analytics?.totalCheckedIn || 0} icon={FiCheckCircle} />
-        <StatCard title="Attendance Rate" value={`${analytics?.attendanceRate || 0}%`} />
-        <StatCard title="Total Events" value={analytics?.totalEvents || 0} icon={FiCalendar} />
+        <StatCard
+          title="Total Registrations"
+          value={analytics?.totalRegistrations || 0}
+          icon={FiUsers}
+          description="Confirmed student passes"
+        />
+        <StatCard
+          title="Gate Scans"
+          value={analytics?.totalCheckedIn || 0}
+          icon={FiCheckCircle}
+          description="Verified QR check-ins"
+        />
+        <StatCard
+          title="Attendance Rate"
+          value={`${analytics?.attendanceRate || 0}%`}
+          icon={FiPieChart}
+          description="Turnout ratio"
+        />
+        <StatCard
+          title="Total Events"
+          value={analytics?.totalEvents || 0}
+          icon={FiCalendar}
+          description="Approved & published"
+        />
       </div>
 
+      {/* Breakdown Grids */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Category Breakdown Table */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-5">
-          <h3 className="text-sm font-bold text-neutral-900 dark:text-white mb-3">Events by Category</h3>
-          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+        <div className="bg-white border border-neutral-200 p-6">
+          <h3 className="text-l font-bold uppercase tracking-wider text-neutral-900 mb-4 font-display">
+            Events by Category
+          </h3>
+          <div className="divide-y divide-neutral-200">
             {(analytics?.categoryStats || []).map((item) => (
-              <div key={item.name} className="py-2 flex items-center justify-between text-xs">
-                <span className="font-medium text-neutral-700 dark:text-neutral-300">{item.name}</span>
-                <span className="font-mono font-bold text-neutral-900 dark:text-white">{item.value}</span>
+              <div key={item.name} className="py-3 flex items-center justify-between text-s font-[Segoe UI]">
+                <span className="font-bold text-neutral-800 uppercase tracking-wider">
+                  {item.name}
+                </span>
+                <span className="font-bold text-primary-600 font-mono text-base">
+                  {item.value}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Department Breakdown Table */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-5">
-          <h3 className="text-sm font-bold text-neutral-900 dark:text-white mb-3">Users by Department</h3>
-          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+        <div className="bg-white border border-neutral-200 p-6">
+          <h3 className="text-l font-bold uppercase tracking-wider text-neutral-900 mb-4 font-display">
+            Users by Department
+          </h3>
+          <div className="divide-y divide-neutral-200">
             {(analytics?.departmentStats || []).map((item) => (
-              <div key={item.name} className="py-2 flex items-center justify-between text-xs">
-                <span className="font-medium text-neutral-700 dark:text-neutral-300">{item.name}</span>
-                <span className="font-mono font-bold text-neutral-900 dark:text-white">{item.value}</span>
+              <div key={item.name} className="py-3 flex items-center justify-between text-s font-[Segoe UI]">
+                <span className="font-bold text-neutral-800 uppercase tracking-wider">
+                  {item.name}
+                </span>
+                <span className="font-bold text-primary-600 font-mono text-base">
+                  {item.value}
+                </span>
               </div>
             ))}
           </div>

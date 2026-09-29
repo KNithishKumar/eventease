@@ -32,10 +32,10 @@ export const AuthProvider = ({ children }) => {
       const data = await authService.login(credentials);
       localStorage.setItem('eventease_token', data.token);
       setUser(data);
-      toast.success(`Welcome back, ${data.name}! 👋`);
+      toast.success(`Welcome ${data.name}!`);
       return data;
     } catch (error) {
-      const msg = error.response?.data?.message || 'Login failed. Check credentials.';
+      const msg = error.response?.data?.message || 'Login failed.';
       toast.error(msg);
       throw error;
     }
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
       const data = await authService.register(userData);
       localStorage.setItem('eventease_token', data.token);
       setUser(data);
-      toast.success('Registration successful! Welcome to EventEase 🎉');
+      toast.success('Registration successful!');
       return data;
     } catch (error) {
       const msg = error.response?.data?.message || 'Registration failed.';

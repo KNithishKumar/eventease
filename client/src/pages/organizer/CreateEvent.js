@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { eventService } from '../../services/eventService';
 import toast from 'react-hot-toast';
-import { FiCalendar, FiUploadCloud, FiArrowLeft, FiPlusCircle } from 'react-icons/fi';
+import { FiUploadCloud, FiArrowLeft, FiPlusCircle } from 'react-icons/fi';
 
 const categories = [
   'Technical',
@@ -82,21 +82,25 @@ const CreateEvent = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="inline-flex items-center space-x-2 text-sm font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900"
+        className="inline-flex items-center space-x-2 text-s font-bold uppercase tracking-wider text-neutral-600 hover:text-primary-600 transition-colors"
       >
         <FiArrowLeft size={16} />
         <span>Back to Events</span>
       </button>
 
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-8 rounded-lg space-y-6 shadow-sm">
+      {/* Main Form Container */}
+      <div className="bg-white border border-neutral-200 p-8 space-y-6">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+          <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
             Organizer Portal
-          </span>
-          <h1 className="text-2xl font-bold text-neutral-900 dark:text-white mt-1">Create New Campus Event</h1>
-          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+          </label>
+          <h1 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
+            Create New Campus Event
+          </h1>
+          <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
             Fill out all details. Submitted events will enter Pending Approval status for Admin review.
           </p>
         </div>
@@ -104,11 +108,11 @@ const CreateEvent = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Image Upload Area */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
               Event Poster / Banner Image
             </label>
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className="w-full sm:w-48 h-32 rounded-2xl bg-neutral-100 dark:bg-neutral-800 border-2 border-dashed border-neutral-300 dark:border-neutral-700 flex items-center justify-center overflow-hidden">
+              <div className="w-full sm:w-48 h-32 bg-neutral-50 border-2 border-dashed border-neutral-300 flex items-center justify-center overflow-hidden">
                 {imagePreview ? (
                   <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                 ) : (
@@ -119,7 +123,7 @@ const CreateEvent = () => {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="text-xs text-neutral-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-primary-50 file:text-primary-600 hover:file:bg-primary-100"
+                className="text-xs text-neutral-500 font-[Segoe UI] file:mr-4 file:py-2 file:px-4 file:border-0 file:text-xs file:font-bold file:uppercase file:tracking-wider file:bg-primary-50 file:text-primary-600 hover:file:bg-primary-100 transition-colors"
               />
             </div>
           </div>
@@ -127,7 +131,7 @@ const CreateEvent = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Title */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Event Title *
               </label>
               <input
@@ -137,20 +141,20 @@ const CreateEvent = () => {
                 placeholder="e.g. CodeSprint 2026 Hackathon"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Category */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Category *
               </label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>
@@ -162,14 +166,14 @@ const CreateEvent = () => {
 
             {/* Department */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Target Department
               </label>
               <select
                 name="department"
                 value={formData.department}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               >
                 <option value="All Departments">All Departments</option>
                 <option value="Computer Science">Computer Science</option>
@@ -181,7 +185,7 @@ const CreateEvent = () => {
 
             {/* Venue */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Venue Location *
               </label>
               <input
@@ -191,13 +195,13 @@ const CreateEvent = () => {
                 placeholder="e.g. CEG Campus Auditorium"
                 value={formData.venue}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Date */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Event Date *
               </label>
               <input
@@ -206,13 +210,13 @@ const CreateEvent = () => {
                 required
                 value={formData.date}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Registration Deadline */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Registration Deadline *
               </label>
               <input
@@ -221,13 +225,13 @@ const CreateEvent = () => {
                 required
                 value={formData.registrationDeadline}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Start Time */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Start Time *
               </label>
               <input
@@ -236,13 +240,13 @@ const CreateEvent = () => {
                 placeholder="09:00 AM"
                 value={formData.startTime}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* End Time */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 End Time *
               </label>
               <input
@@ -251,13 +255,13 @@ const CreateEvent = () => {
                 placeholder="05:00 PM"
                 value={formData.endTime}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Max Capacity */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Maximum Seats (Capacity) *
               </label>
               <input
@@ -267,20 +271,20 @@ const CreateEvent = () => {
                 required
                 value={formData.capacity}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Event Type (Free / Paid) */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Fee Type
               </label>
               <select
                 name="eventType"
                 value={formData.eventType}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               >
                 <option value="Free">Free</option>
                 <option value="Paid">Paid</option>
@@ -290,7 +294,7 @@ const CreateEvent = () => {
             {formData.eventType === 'Paid' && (
               <>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                     Registration Fee (₹) *
                   </label>
                   <input
@@ -300,53 +304,53 @@ const CreateEvent = () => {
                     required
                     value={formData.registrationFee}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                    className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
                   />
                 </div>
 
-                <div className="sm:col-span-2 p-4 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 space-y-3">
+                <div className="sm:col-span-2 p-4 bg-emerald-50 border border-emerald-200 space-y-3">
                   <div>
-                    <h4 className="text-xs font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
-                      Organizer Real Payment & Collection Account
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                      Organizer Payment & Collection Account
                     </h4>
-                    <p className="text-[11px] text-emerald-700 dark:text-emerald-400">
+                    <p className="text-xs text-emerald-700 font-[Segoe UI] mt-0.5">
                       Students will pay directly to these details via UPI or Net Banking to complete registration.
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Organizer UPI ID *
                       </label>
                       <input
                         type="text"
                         name="upiId"
-                        placeholder="e.g. 9876543210@ybl or organizer@okaxis"
+                        placeholder="e.g. 9876543210@ybl"
                         required={formData.eventType === 'Paid'}
                         value={formData.upiId}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white font-mono"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-mono focus:outline-none focus:ring-2 focus:ring-primary-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Account Holder Name *
                       </label>
                       <input
                         type="text"
                         name="accountHolderName"
-                        placeholder="e.g. CSE Association / John Doe"
+                        placeholder="e.g. CSE Association"
                         required={formData.eventType === 'Paid'}
                         value={formData.accountHolderName}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-[Segoe UI] focus:outline-none focus:ring-2 focus:ring-primary-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Bank Name *
                       </label>
                       <input
@@ -356,12 +360,12 @@ const CreateEvent = () => {
                         required={formData.eventType === 'Paid'}
                         value={formData.bankName}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-[Segoe UI] focus:outline-none focus:ring-2 focus:ring-primary-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         Bank Account Number *
                       </label>
                       <input
@@ -371,12 +375,12 @@ const CreateEvent = () => {
                         required={formData.eventType === 'Paid'}
                         value={formData.bankAccountNumber}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white font-mono"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-mono focus:outline-none focus:ring-2 focus:ring-primary-500"
                       />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
                         IFSC Code *
                       </label>
                       <input
@@ -386,7 +390,7 @@ const CreateEvent = () => {
                         required={formData.eventType === 'Paid'}
                         value={formData.bankIfsc}
                         onChange={handleChange}
-                        className="w-full px-3.5 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl text-xs text-neutral-900 dark:text-white font-mono uppercase"
+                        className="w-full px-3.5 py-2.5 bg-white border border-neutral-200 text-xs text-neutral-900 font-mono uppercase focus:outline-none focus:ring-2 focus:ring-primary-500"
                       />
                     </div>
                   </div>
@@ -396,7 +400,7 @@ const CreateEvent = () => {
 
             {/* Eligibility */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Eligibility Criteria
               </label>
               <input
@@ -405,13 +409,13 @@ const CreateEvent = () => {
                 placeholder="e.g. Open to all 3rd and 4th year CSE students"
                 value={formData.eligibility}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Contact Info */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Organizer Contact Info *
               </label>
               <input
@@ -421,13 +425,13 @@ const CreateEvent = () => {
                 placeholder="organizer@eventease.edu | +91 98765 43211"
                 value={formData.contact}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full px-4 py-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               />
             </div>
 
             {/* Description */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
                 Event Description *
               </label>
               <textarea
@@ -437,15 +441,16 @@ const CreateEvent = () => {
                 placeholder="Provide a detailed overview of the event, agenda, prizes..."
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full p-3 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white"
+                className="w-full p-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
               ></textarea>
             </div>
           </div>
 
+          {/* Submit Button Matching Login Style */}
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold rounded-xl shadow-lg transition-colors text-sm flex items-center justify-center space-x-2"
+            className="w-full text-xl py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold transition-colors text-sm uppercase tracking-wider flex items-center justify-center space-x-2"
           >
             <FiPlusCircle size={18} />
             <span>{submitting ? 'Submitting Event...' : 'Submit Event for Admin Approval'}</span>

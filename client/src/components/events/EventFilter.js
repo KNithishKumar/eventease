@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiSearch, FiFilter, FiRotateCcw } from 'react-icons/fi';
+import { FiSearch, FiRotateCcw } from 'react-icons/fi';
 
 const categories = [
   'All',
@@ -25,17 +25,17 @@ const departments = [
 
 const EventFilter = ({ filters, onFilterChange, onReset }) => {
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg mb-6 space-y-4 shadow-sm">
+    <div className="bg-white border border-neutral-200 p-4 mb-6 space-y-4 font-[Segoe UI]">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Search Bar */}
         <div className="relative w-full md:w-80">
-          <FiSearch className="absolute left-3 top-1/2 -tranneutral-y-1/2 text-neutral-400" size={16} />
+          <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
           <input
             type="text"
             placeholder="Search events..."
             value={filters.search || ''}
             onChange={(e) => onFilterChange('search', e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 text-neutral-900 dark:text-white"
+            className="w-full pl-10 pr-4 py-3 text-xs bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
           />
         </div>
 
@@ -45,7 +45,7 @@ const EventFilter = ({ filters, onFilterChange, onReset }) => {
           <select
             value={filters.category || 'All'}
             onChange={(e) => onFilterChange('category', e.target.value)}
-            className="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-md text-xs font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 text-neutral-800 dark:text-neutral-200"
+            className="px-3 py-3 bg-neutral-50 border border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -58,7 +58,7 @@ const EventFilter = ({ filters, onFilterChange, onReset }) => {
           <select
             value={filters.eventType || 'All'}
             onChange={(e) => onFilterChange('eventType', e.target.value)}
-            className="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-md text-xs font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 text-neutral-800 dark:text-neutral-200"
+            className="px-3 py-3 bg-neutral-50 border border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
           >
             <option value="All">Fee: All</option>
             <option value="Free">Free Only</option>
@@ -69,7 +69,7 @@ const EventFilter = ({ filters, onFilterChange, onReset }) => {
           <select
             value={filters.dateFilter || 'upcoming'}
             onChange={(e) => onFilterChange('dateFilter', e.target.value)}
-            className="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-md text-xs font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 text-neutral-800 dark:text-neutral-200"
+            className="px-3 py-3 bg-neutral-50 border border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
           >
             <option value="upcoming">Date: Upcoming</option>
             <option value="today">Today</option>
@@ -81,7 +81,7 @@ const EventFilter = ({ filters, onFilterChange, onReset }) => {
           <select
             value={filters.department || 'All'}
             onChange={(e) => onFilterChange('department', e.target.value)}
-            className="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-md text-xs font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 text-neutral-800 dark:text-neutral-200"
+            className="px-3 py-3 bg-neutral-50 border border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
           >
             {departments.map((d) => (
               <option key={d} value={d}>
@@ -95,7 +95,7 @@ const EventFilter = ({ filters, onFilterChange, onReset }) => {
         {onReset && (
           <button
             onClick={onReset}
-            className="px-3 py-2 rounded-md text-neutral-600 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 transition-colors flex items-center space-x-1.5 text-xs font-medium"
+            className="px-4 py-3 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 text-neutral-800 transition-colors flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider"
             title="Reset Filters"
           >
             <FiRotateCcw size={14} />

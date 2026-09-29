@@ -5,7 +5,7 @@ import { eventService } from '../../services/eventService';
 import QRScanner from '../../components/events/QRScanner';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import toast from 'react-hot-toast';
-import { FiCamera, FiCheckCircle, FiXCircle, FiArrowLeft, FiUser } from 'react-icons/fi';
+import { FiCheckCircle, FiXCircle, FiArrowLeft } from 'react-icons/fi';
 
 const ScannerPage = () => {
   const { id } = useParams();
@@ -67,18 +67,24 @@ const ScannerPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
+      {/* Back Button */}
       <button
         onClick={() => navigate('/organizer/events')}
-        className="inline-flex items-center space-x-2 text-sm font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900"
+        className="inline-flex items-center space-x-2 text-s font-bold uppercase tracking-wider text-neutral-600 hover:text-primary-600 transition-colors"
       >
         <FiArrowLeft size={16} />
         <span>Back to My Events</span>
       </button>
 
-      <div className="text-center space-y-2">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Live Gate Attendance Scanner</span>
-        <h1 className="text-2xl font-black text-neutral-900 dark:text-white font-display">{event?.title}</h1>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400">
+      {/* Header Container */}
+      <div className="bg-white border border-neutral-200 p-6 text-center">
+        <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
+          Live Gate Attendance Scanner
+        </label>
+        <h1 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
+          {event?.title}
+        </h1>
+        <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
           Point camera at student's digital ticket QR code or manually input registration ID.
         </p>
       </div>
@@ -89,23 +95,25 @@ const ScannerPage = () => {
       {/* Scan Result Feedback Card */}
       {lastResult && (
         <div
-          className={`p-6 rounded-3xl border shadow-lg space-y-3 transition-all ${
+          className={`p-6 border space-y-3 transition-all ${
             lastResult.success
-              ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-100'
-              : 'bg-rose-50 dark:bg-rose-950/80 border-rose-300 dark:border-rose-800 text-rose-900 dark:text-rose-100'
+              ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+              : 'bg-rose-50 border-rose-200 text-rose-900'
           }`}
         >
           <div className="flex items-center space-x-3">
             {lastResult.success ? (
-              <FiCheckCircle size={32} className="text-emerald-500 shrink-0" />
+              <FiCheckCircle size={32} className="text-emerald-600 shrink-0" />
             ) : (
-              <FiXCircle size={32} className="text-rose-500 shrink-0" />
+              <FiXCircle size={32} className="text-rose-600 shrink-0" />
             )}
             <div>
-              <h3 className="text-lg font-bold font-display">{lastResult.message}</h3>
+              <h3 className="text-l font-bold uppercase tracking-wider font-display">
+                {lastResult.message}
+              </h3>
               {lastResult.student && (
-                <p className="text-xs font-semibold opacity-90 mt-0.5">
-                  Student: {lastResult.student.name} ({lastResult.student.department} - {lastResult.student.year})
+                <p className="text-s font-[Segoe UI] opacity-90 mt-1">
+                  <strong className="uppercase font-bold">Student:</strong> {lastResult.student.name} ({lastResult.student.department} - {lastResult.student.year})
                 </p>
               )}
             </div>

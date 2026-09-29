@@ -5,7 +5,7 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import Badge from '../../components/common/Badge';
 import toast from 'react-hot-toast';
-import { FiCalendar, FiClock, FiCheckCircle, FiStar, FiCamera } from 'react-icons/fi';
+import { FiStar, FiCamera } from 'react-icons/fi';
 
 const MyEvents = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -48,41 +48,47 @@ const MyEvents = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">My Registered Events</h1>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+      {/* Header Container */}
+      <div className="bg-white border border-neutral-200 p-6">
+        <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
+          Student Portal
+        </label>
+        <h1 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
+          My Registered Events
+        </h1>
+        <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
           Access your digital QR tickets, waitlist status, and post-event feedback forms.
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-neutral-200 dark:border-neutral-800 space-x-4">
+      <div className="flex border border-neutral-200 bg-white">
         <button
           onClick={() => setActiveTab('upcoming')}
-          className={`pb-3 text-sm font-semibold transition-all relative ${
+          className={`px-5 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${
             activeTab === 'upcoming'
-              ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600'
-              : 'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+              ? 'bg-primary-600 text-white'
+              : 'text-neutral-600 hover:bg-neutral-100'
           }`}
         >
           Upcoming ({upcoming.length})
         </button>
         <button
           onClick={() => setActiveTab('completed')}
-          className={`pb-3 text-sm font-semibold transition-all relative ${
+          className={`px-5 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${
             activeTab === 'completed'
-              ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600'
-              : 'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+              ? 'bg-primary-600 text-white'
+              : 'text-neutral-600 hover:bg-neutral-100'
           }`}
         >
           Completed ({completed.length})
         </button>
         <button
           onClick={() => setActiveTab('waitlisted')}
-          className={`pb-3 text-sm font-semibold transition-all relative ${
+          className={`px-5 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${
             activeTab === 'waitlisted'
-              ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600'
-              : 'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+              ? 'bg-primary-600 text-white'
+              : 'text-neutral-600 hover:bg-neutral-100'
           }`}
         >
           Waitlisted ({waitlisted.length})
@@ -95,7 +101,10 @@ const MyEvents = () => {
           title={`No ${activeTab} events`}
           message={`You currently have no ${activeTab} event registrations.`}
           action={
-            <Link to="/events" className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-md text-xs hover:bg-indigo-700 transition-colors">
+            <Link
+              to="/events"
+              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold uppercase tracking-wider transition-colors inline-block"
+            >
               Explore Events
             </Link>
           }
@@ -106,34 +115,39 @@ const MyEvents = () => {
             const ev = reg.event;
             if (!ev) return null;
             return (
-              <div key={reg._id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-5 flex flex-col justify-between space-y-4 shadow-sm">
-                <div className="flex items-start justify-between">
-                  <div>
+              <div
+                key={reg._id}
+                className="bg-white border border-neutral-200 p-6 flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
                     <Badge variant={reg.status === 'registered' ? 'success' : 'warning'}>
                       {reg.status === 'registered' ? 'Registered' : `Waitlist Position #${reg.waitlistPosition}`}
                     </Badge>
-                    <h3 className="text-base font-bold text-neutral-900 dark:text-white mt-2">
-                      {ev.title}
-                    </h3>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-                      {new Date(ev.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • {ev.venue}
-                    </p>
+                    {reg.checkedIn && (
+                      <Badge variant="success">
+                        Checked In
+                      </Badge>
+                    )}
                   </div>
-                  {reg.checkedIn && (
-                    <Badge variant="success" className="shrink-0">
-                      Checked In
-                    </Badge>
-                  )}
+                  <h3 className="text-xl font-bold uppercase tracking-wider text-neutral-900">
+                    {ev.title}
+                  </h3>
+                  <p className="text-s text-neutral-500 font-[Segoe UI]">
+                    {new Date(ev.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • {ev.venue}
+                  </p>
                 </div>
 
-                <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
-                  <span className="text-[11px] font-mono text-neutral-400">ID: {reg.registrationId}</span>
+                <div className="pt-4 border-t border-neutral-200 flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-neutral-500 uppercase">
+                    ID: {reg.registrationId}
+                  </span>
 
                   <div className="flex items-center space-x-2">
                     {reg.status === 'registered' && (
                       <Link
                         to={`/student/ticket/${reg.registrationId}`}
-                        className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold rounded-lg shadow-sm flex items-center space-x-1"
+                        className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1"
                       >
                         <FiCamera size={14} />
                         <span>Ticket</span>
@@ -143,7 +157,7 @@ const MyEvents = () => {
                     {activeTab === 'completed' && (
                       <Link
                         to={`/student/feedback/${ev._id}`}
-                        className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg shadow-sm flex items-center space-x-1"
+                        className="px-4 py-2 bg-neutral-800 hover:bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1"
                       >
                         <FiStar size={14} />
                         <span>Feedback</span>

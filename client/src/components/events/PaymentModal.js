@@ -6,19 +6,16 @@ import {
   FiCreditCard,
   FiSmartphone,
   FiGlobe,
-  FiLock,
-  FiAlertTriangle,
   FiCheck
 } from 'react-icons/fi';
 
 const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }) => {
   if (!event) return null;
 
-  const [razorpaySubMethod, setRazorpaySubMethod] = useState('UPI'); // 'UPI', 'Card', 'Netbanking'
+  const [razorpaySubMethod, setRazorpaySubMethod] = useState('Netbanking'); // 'Netbanking', 'Card', 'Wallet'
   const [loadingOrder, setLoadingOrder] = useState(false);
 
   const accountHolder = event.accountHolderName || event.organizer?.name || 'EventEase College Organizer';
-  const upiId = event.upiId || 'eventease.organizer@okaxis';
   const bankName = event.bankName || 'State Bank of India (Campus Branch)';
 
   // Load Razorpay JS SDK if available
@@ -36,7 +33,6 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
   const handleStartRazorpayCheckout = async () => {
     setLoadingOrder(true);
     try {
-      // 1. Request Order Creation from Backend (MongoDB fetched price)
       const orderData = await paymentService.createOrder(event._id);
 
       if (orderData.isFree) {
@@ -47,7 +43,6 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
 
       const keyId = orderData.keyId || import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_EventEase2026';
 
-      // 2. Setup Razorpay Checkout options
       const options = {
         key: keyId,
         amount: orderData.amount,
@@ -57,7 +52,6 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
         order_id: orderData.orderId,
         handler: async function (response) {
           try {
-            // 3. Send Razorpay response to Backend Signature Verification endpoint
             const verifyRes = await paymentService.verifyPayment({
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
@@ -79,7 +73,7 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
           event_id: event._id,
           organizer: accountHolder
         },
-        theme: { color: '#4f46e5' },
+        theme: { color: '#e11d48' },
         modal: {
           ondismiss: function () {
             toast.error('Razorpay payment cancelled. Booking was not created.');
@@ -87,7 +81,6 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
         }
       };
 
-      // Open Razorpay SDK if available, or call sandbox test handler
       if (window.Razorpay) {
         try {
           const rzp = new window.Razorpay(options);
@@ -105,7 +98,6 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
     }
   };
 
-  // Helper for direct Razorpay Test Sandbox verification with backend
   const handleSimulatedBackendVerify = async (providedOrderId) => {
     try {
       const mockPayId = `pay_rzp_test_${Math.random().toString(36).substring(2, 11)}${Date.now().toString().slice(-4)}`;
@@ -119,64 +111,55 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
         eventId: event._id
       });
 
-      toast.success('Razorpay Test Payment Verified by Backend!');
+      toast.success('Razorpay Payment Verified by Backend!');
       onPaymentSuccess(verifyRes);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Verification failed');
     }
   };
 
-  const handleSimulateFailure = () => {
-    toast.error('Payment Declined by Issuer. Booking was NOT created in MongoDB.');
-  };
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Razorpay Standard Checkout (Test Mode)" maxWidth="max-w-xl">
-      <div className="space-y-5">
-        {/* Payment Summary Header */}
-        <div className="p-4 rounded-lg bg-neutral-900 text-white flex items-center justify-between shadow-sm">
+    <Modal isOpen={isOpen} onClose={onClose} title="Razorpay Checkout" maxWidth="max-w-xl">
+      <div className="space-y-5 font-[Segoe UI]">
+        {/* Payment Summary Header Card */}
+        <div className="p-4 bg-neutral-50 border border-neutral-200 flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase font-bold tracking-wider bg-neutral-800 px-2 py-0.5 rounded text-indigo-300">
-              Razorpay Test Checkout
+            <span className="text-xs font-bold uppercase tracking-wider text-primary-600 block mb-0.5">
+              Order Summary
             </span>
-            <h3 className="text-base font-semibold mt-1">{event.title}</h3>
-            <p className="text-xs text-neutral-400">{event.category} • {event.venue}</p>
+            <h3 className="text-l font-bold uppercase tracking-wider text-neutral-900">{event.title}</h3>
+            <p className="text-s text-neutral-500 font-[Segoe UI]">{event.category} • {event.venue}</p>
           </div>
           <div className="text-right">
-            <span className="text-xs text-neutral-400 font-medium block">Total Amount</span>
-            <span className="text-2xl font-bold">₹{event.registrationFee}</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block">Total Amount</span>
+            <span className="text-2xl font-bold font-mono text-primary-600">₹{event.registrationFee}</span>
           </div>
         </div>
 
-        {/* RAZORPAY TEST GATEWAY CONTAINER */}
-        <div className="space-y-4 rounded-lg border border-indigo-200 dark:border-indigo-800/80 overflow-hidden bg-neutral-900 text-white shadow-md">
+        {/* RAZORPAY GATEWAY CONTAINER */}
+        <div className="border border-neutral-200 bg-white space-y-4">
           {/* Razorpay Top Bar */}
-          <div className="bg-indigo-950 p-4 border-b border-indigo-800/50 flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center font-bold text-white text-xs">
-                R
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-white">Razorpay Standard Checkout</h4>
-                <span className="text-[10px] text-indigo-300 font-mono">Test Mode Integration</span>
-              </div>
+          <div className="bg-neutral-900 p-4 border-b border-neutral-800 flex items-center space-x-2 text-white">
+            <div className="w-7 h-7 bg-primary-600 flex items-center justify-center font-bold text-white text-xs">
+              R
             </div>
-            <span className="px-2.5 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold rounded-full uppercase tracking-wider">
-              Test Mode Active
-            </span>
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white">Razorpay Standard Checkout</h4>
+              <span className="text-xs text-neutral-400 font-mono">Secure Payment Integration</span>
+            </div>
           </div>
 
           <div className="p-5 space-y-4">
-            {/* Payment Methods Sub-Selector */}
+            {/* Payment Methods Selector: NetBanking, Card, Wallet */}
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">
-                Select Razorpay Test Method
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                Select Payment Method
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'UPI', label: 'UPI / QR', icon: FiSmartphone },
-                  { id: 'Card', label: 'Test Card', icon: FiCreditCard },
-                  { id: 'Netbanking', label: 'Net Banking', icon: FiGlobe }
+                  { id: 'Netbanking', label: 'Net Banking', icon: FiGlobe },
+                  { id: 'Card', label: 'Card', icon: FiCreditCard },
+                  { id: 'Wallet', label: 'Wallet', icon: FiSmartphone }
                 ].map((item) => {
                   const Icon = item.icon;
                   return (
@@ -184,13 +167,13 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
                       key={item.id}
                       type="button"
                       onClick={() => setRazorpaySubMethod(item.id)}
-                      className={`p-2.5 rounded-lg border text-xs font-semibold flex flex-col items-center justify-center space-y-1 transition-all ${
+                      className={`p-3 border text-xs font-bold uppercase tracking-wider flex flex-col items-center justify-center space-y-1.5 transition-colors font-[Segoe UI] ${
                         razorpaySubMethod === item.id
-                          ? 'bg-indigo-600 border-indigo-400 text-white shadow-sm'
-                          : 'bg-neutral-800 border-neutral-700 text-neutral-300 hover:bg-neutral-700'
+                          ? 'bg-primary-600 border-primary-600 text-white'
+                          : 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100 hover:text-primary-600'
                       }`}
                     >
-                      <Icon size={16} />
+                      <Icon size={18} />
                       <span>{item.label}</span>
                     </button>
                   );
@@ -199,71 +182,52 @@ const PaymentModal = ({ isOpen, onClose, event, onPaymentSuccess, isProcessing }
             </div>
 
             {/* Context Details */}
-            <div className="p-3.5 bg-neutral-800/90 rounded-lg border border-neutral-700/80 text-xs space-y-1.5 font-mono text-neutral-300">
+            <div className="p-4 bg-neutral-50 border border-neutral-200 text-xs space-y-2 font-[Segoe UI]">
               <div className="flex justify-between">
-                <span className="text-neutral-400">Order Amount:</span>
-                <span className="font-bold text-emerald-400">₹{event.registrationFee}</span>
+                <span className="text-neutral-500 font-bold uppercase tracking-wider">Order Amount:</span>
+                <span className="font-bold text-primary-600 font-mono text-sm">₹{event.registrationFee}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-400">Merchant / Beneficiary:</span>
-                <span className="font-bold text-white">{accountHolder}</span>
+                <span className="text-neutral-500 font-bold uppercase tracking-wider">Merchant / Beneficiary:</span>
+                <span className="font-bold text-neutral-900 uppercase">{accountHolder}</span>
               </div>
-              {razorpaySubMethod === 'UPI' && (
-                <div className="flex justify-between text-[11px] pt-1 text-neutral-400">
-                  <span>Test UPI VPA:</span>
-                  <span className="text-indigo-300 font-bold">{upiId}</span>
+              {razorpaySubMethod === 'Netbanking' && (
+                <div className="flex justify-between pt-1 border-t border-neutral-200 text-neutral-600">
+                  <span className="font-bold uppercase tracking-wider">Bank:</span>
+                  <span className="text-primary-600 font-bold">{bankName}</span>
                 </div>
               )}
               {razorpaySubMethod === 'Card' && (
-                <div className="flex justify-between text-[11px] pt-1 text-neutral-400">
-                  <span>Test Card:</span>
-                  <span className="text-indigo-300 font-bold">4111 •••• •••• 1111 (Visa Test)</span>
+                <div className="flex justify-between pt-1 border-t border-neutral-200 text-neutral-600">
+                  <span className="font-bold uppercase tracking-wider">Card Options:</span>
+                  <span className="text-primary-600 font-bold">Credit / Debit Card</span>
                 </div>
               )}
-              {razorpaySubMethod === 'Netbanking' && (
-                <div className="flex justify-between text-[11px] pt-1 text-neutral-400">
-                  <span>Test Bank:</span>
-                  <span className="text-indigo-300 font-bold">{bankName}</span>
+              {razorpaySubMethod === 'Wallet' && (
+                <div className="flex justify-between pt-1 border-t border-neutral-200 text-neutral-600">
+                  <span className="font-bold uppercase tracking-wider">Supported Wallets:</span>
+                  <span className="text-primary-600 font-bold">Paytm / PhonePe / Mobikwik</span>
                 </div>
               )}
             </div>
 
-            {/* Action Buttons */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            {/* Checkout Action Button */}
+            <div className="pt-1">
               <button
                 type="button"
                 onClick={handleStartRazorpayCheckout}
                 disabled={isProcessing || loadingOrder}
-                className="py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold rounded-lg shadow-sm transition-all text-xs flex items-center justify-center space-x-2"
+                className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center space-x-2"
               >
                 <FiCheck size={16} />
                 <span>
                   {loadingOrder || isProcessing
                     ? 'Processing Order...'
-                    : `Proceed to Razorpay Checkout (₹${event.registrationFee})`}
+                    : `Proceed to Razorpay (₹${event.registrationFee})`}
                 </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleSimulateFailure}
-                disabled={isProcessing || loadingOrder}
-                className="py-3 bg-neutral-800 hover:bg-rose-950 text-rose-300 border border-rose-800/40 font-semibold rounded-lg transition-all text-xs flex items-center justify-center space-x-1.5"
-              >
-                <FiAlertTriangle size={14} />
-                <span>Simulate Cancel / Failure</span>
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Security Guarantee Note */}
-        <div className="flex items-center justify-between text-[11px] text-neutral-500 dark:text-neutral-400 pt-2">
-          <span className="flex items-center space-x-1">
-            <FiLock size={14} />
-            <span>Razorpay Signature Verification Active</span>
-          </span>
-          <span className="font-semibold text-neutral-700 dark:text-neutral-300">Instant Digital Ticket Generation</span>
         </div>
       </div>
     </Modal>

@@ -1,29 +1,18 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('eventease_theme');
-    if (saved) {
-      return saved === 'dark';
-    }
-    return false;
-  });
+  const isDark = false;
 
   useEffect(() => {
     const root = document.documentElement;
-    if (isDark) {
-      root.classList.add('dark');
-      localStorage.setItem('eventease_theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('eventease_theme', 'light');
-    }
-  }, [isDark]);
+    root.classList.remove('dark');
+    localStorage.setItem('eventease_theme', 'light');
+  }, []);
 
   const toggleTheme = () => {
-    setIsDark((prev) => !prev);
+    // Dark mode is permanently disabled
   };
 
   return (

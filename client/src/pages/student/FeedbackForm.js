@@ -56,11 +56,11 @@ const FeedbackForm = () => {
   };
 
   if (loading) return <LoadingSpinner fullScreen />;
-  if (!event) return <div className="p-8 text-center">Event not found</div>;
+  if (!event) return <div className="p-8 text-center text-s uppercase font-bold text-neutral-500 font-[Segoe UI]">Event not found</div>;
 
   const renderStarSelector = (value, setter, label) => (
     <div className="space-y-1">
-      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+      <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
         {label}
       </label>
       <div className="flex items-center space-x-1">
@@ -69,35 +69,41 @@ const FeedbackForm = () => {
             key={star}
             type="button"
             onClick={() => setter(star)}
-            className="p-1.5 focus:outline-none transition-transform hover:scale-110"
+            className="p-1 focus:outline-none transition-transform hover:scale-110"
           >
             <FiStar
-              size={24}
-              className={star <= value ? 'text-amber-400 fill-amber-400' : 'text-neutral-300 dark:text-neutral-700'}
+              size={22}
+              className={star <= value ? 'text-amber-400 fill-amber-400' : 'text-neutral-300'}
             />
           </button>
         ))}
-        <span className="text-xs font-bold text-neutral-700 dark:text-neutral-300 ml-2">{value} / 5</span>
+        <span className="text-s font-bold text-neutral-900 font-mono ml-2">{value} / 5</span>
       </div>
     </div>
   );
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
+      {/* Back Button */}
       <button
         onClick={() => navigate('/student/my-events')}
-        className="inline-flex items-center space-x-2 text-sm font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900"
+        className="inline-flex items-center space-x-2 text-s font-bold uppercase tracking-wider text-neutral-600 hover:text-primary-600 transition-colors"
       >
         <FiArrowLeft size={16} />
         <span>Back to My Events</span>
       </button>
 
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-8 rounded-lg space-y-6 shadow-sm">
+      {/* Main Container */}
+      <div className="bg-white border border-neutral-200 p-8 space-y-6">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Post-Event Feedback</span>
-          <h2 className="text-xl font-bold text-neutral-900 dark:text-white mt-1">{event.title}</h2>
-          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-            Help the organizer and campus community by sharing your review.
+          <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
+            Student Portal
+          </label>
+          <h2 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
+            {event.title}
+          </h2>
+          <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
+            Help the organizer and campus community by sharing your post-event review.
           </p>
         </div>
 
@@ -108,7 +114,7 @@ const FeedbackForm = () => {
           {renderStarSelector(venueRating, setVenueRating, 'Venue & Facilities')}
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">
               Comments & Suggestions
             </label>
             <textarea
@@ -116,14 +122,14 @@ const FeedbackForm = () => {
               placeholder="What did you enjoy about the event? Any suggestions for improvement?"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="w-full p-3 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:outline-none"
+              className="w-full p-3 text-sm bg-neutral-50 border border-neutral-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 font-[Segoe UI]"
             ></textarea>
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold rounded-xl shadow-lg transition-colors text-sm flex items-center justify-center space-x-2"
+            className="w-full text-xl py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-bold transition-colors text-sm uppercase tracking-wider flex items-center justify-center space-x-2"
           >
             <FiSend size={18} />
             <span>{submitting ? 'Submitting Feedback...' : 'Submit Official Review'}</span>

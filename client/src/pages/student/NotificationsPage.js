@@ -3,7 +3,7 @@ import { notificationService } from '../../services/notificationService';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import toast from 'react-hot-toast';
-import { FiBell, FiCheckCircle, FiInfo, FiClock, FiVolume2 } from 'react-icons/fi';
+import { FiBell, FiVolume2 } from 'react-icons/fi';
 
 const NotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
@@ -41,9 +41,15 @@ const NotificationsPage = () => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-2xl font-black text-neutral-900 dark:text-white font-display">Notifications & Alerts</h1>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+      {/* Header Container */}
+      <div className="bg-white border border-neutral-200 p-6">
+        <label className="block text-l font-bold uppercase tracking-wider text-primary-600 mb-1">
+          Activity Center
+        </label>
+        <h1 className="text-2xl font-bold uppercase tracking-wider text-neutral-900">
+          Notifications & Alerts
+        </h1>
+        <p className="text-s text-neutral-500 font-[Segoe UI] mt-1">
           Event reminders, waitlist updates, and organizer announcements.
         </p>
       </div>
@@ -55,20 +61,24 @@ const NotificationsPage = () => {
           {notifications.map((n) => (
             <div
               key={n._id}
-              className={`p-5 rounded-2xl border transition-all flex items-start justify-between space-x-4 ${
+              className={`p-5 border transition-all flex items-start justify-between space-x-4 ${
                 n.isRead
-                  ? 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 opacity-80'
-                  : 'bg-primary-50/50 dark:bg-primary-950/30 border-primary-200 dark:border-primary-800 shadow-sm'
+                  ? 'bg-white border-neutral-200'
+                  : 'bg-primary-50 border-primary-200'
               }`}
             >
               <div className="flex items-start space-x-3">
-                <div className="p-2.5 rounded-xl bg-primary-100 dark:bg-primary-900/60 text-primary-600 dark:text-primary-400 shrink-0 mt-0.5">
+                <div className="p-2.5 bg-white border border-neutral-200 text-primary-600 shrink-0 mt-0.5">
                   {n.type === 'announcement' ? <FiVolume2 size={20} /> : <FiBell size={20} />}
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-neutral-900 dark:text-white">{n.title}</h3>
-                  <p className="text-xs text-neutral-600 dark:text-neutral-300 mt-1 leading-relaxed">{n.message}</p>
-                  <span className="text-[10px] font-semibold text-neutral-400 mt-2 block">
+                  <h3 className="text-s font-bold uppercase tracking-wider text-neutral-900">
+                    {n.title}
+                  </h3>
+                  <p className="text-s text-neutral-600 font-[Segoe UI] mt-1 leading-relaxed">
+                    {n.message}
+                  </p>
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mt-2 block">
                     {new Date(n.createdAt).toLocaleDateString()} at {new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
@@ -77,7 +87,7 @@ const NotificationsPage = () => {
               {!n.isRead && (
                 <button
                   onClick={() => handleMarkRead(n._id)}
-                  className="px-3 py-1.5 bg-primary-600 text-white rounded-lg text-xs font-bold shrink-0 hover:bg-primary-700 transition-colors"
+                  className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold uppercase tracking-wider transition-colors shrink-0"
                 >
                   Mark Read
                 </button>
