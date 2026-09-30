@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useAuth } from './context/AuthContext'; // <--- Added useAuth import
 import Navbar from './components/common/Navbar';
 import Sidebar from './components/common/Sidebar';
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -37,11 +38,12 @@ import ManageUsers from './pages/admin/ManageUsers';
 import PlatformAnalytics from './pages/admin/PlatformAnalytics';
 
 const App = () => {
+  const { isAuthenticated } = useAuth(); // <--- Get auth state
   const location = useLocation();
-  const isDashboardRoute =
-    location.pathname.startsWith('/student') ||
-    location.pathname.startsWith('/organizer') ||
-    location.pathname.startsWith('/admin');
+
+  // Hide sidebar on auth pages (Login/Register) or when not authenticated
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const showSidebar = isAuthenticated && !isAuthPage;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#eaf0f8] text-[#1e2448] dark:bg-black dark:text-neutral-100 transition-colors">
@@ -49,8 +51,8 @@ const App = () => {
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
 
       <div className="flex-1 flex max-w-[1600px] w-full mx-auto p-2 sm:p-4 md:p-6 gap-4">
-        {isDashboardRoute && <Sidebar />}
-        <main className={`flex-1 p-2 sm:p-4 lg:p-6 w-full overflow-hidden ${isDashboardRoute ? 'max-w-full' : 'max-w-7xl mx-auto'}`}>
+        {showSidebar && <Sidebar />}
+        <main className={`flex-1 p-2 sm:p-4 lg:p-6 w-full overflow-hidden ${showSidebar ? 'max-w-full' : 'max-w-7xl mx-auto'}`}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
